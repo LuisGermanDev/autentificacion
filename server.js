@@ -47,10 +47,10 @@ app.post("/login", async (req, res) => {
     const usuario = await Usuario.findOne({ email });
     if (!usuario) return res.status(400).send("Usuario no encontrado");
     const passwordCorrecta = await bcrypt.compare(password, usuario.password);
-    if (!passwordCorrecta) return res.status(400).send("Contraseña incorrecta");
+    if (!passwordCorrecta) return res.status(400).send("Contraseña incorrecta"); //no es recomendable avisar si la contra o elusuario es incorrecto, solo con fine academicos
     
     const token = jwt.sign({ id: usuario._id }, SECRET_KEY, { expiresIn: '1h' }); 
-    res.status(200).json({ token }); 
+    res.status(200).json({ token }); // estamos cacturando el token aqui pero en otros casos lo deberiamos guardar enotro lugar seguro
   } catch (error) {
     res.status(500).send("Error al iniciar sesión: " + error.message);
   }
